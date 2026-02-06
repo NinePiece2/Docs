@@ -1,0 +1,36 @@
+name: PR Build & Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint
+        env:
+          CI: false
+        run: npm run lint
+
+      - name: Run build
+        env:
+          CI: false
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+        run: npm run build
+
+      - name: Build Docker image
+        run: docker build -t docs:test .

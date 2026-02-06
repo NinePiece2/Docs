@@ -1,0 +1,16 @@
+.git
+.github
+.next
+node_modules
+.env.local
+.env.example
+.gitignore
+.gitattributes
+.eslintrc*
+.prettierrc*
+.vscode
+.idea
+.DS_Store
+*.md
+*.log
+Dockerfile

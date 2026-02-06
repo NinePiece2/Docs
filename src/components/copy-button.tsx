@@ -3,16 +3,15 @@
 import * as React from "react";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 
-// import { trackEvent, type Event } from "@/lib/events"; Can implment tracking
-import type { Event } from "@/lib/events";
+import { trackEvent, type Event } from "@/lib/events";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 export function copyToClipboardWithMeta(value: string, event?: Event) {
   navigator.clipboard.writeText(value);
-  // if (event) {
-  //   trackEvent(event);
-  // }
+  if (event) {
+    trackEvent(event);
+  }
 }
 
 export function CopyButton({
@@ -53,7 +52,7 @@ export function CopyButton({
             ? {
                 name: event,
                 properties: {
-                  code: value,
+                  code: value.substring(0, 400),
                 },
               }
             : undefined,

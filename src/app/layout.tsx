@@ -9,6 +9,7 @@ import { LayoutProvider } from "@/hooks/use-layout";
 import { SiteFooter } from "@/components/site-footer";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/config";
+import UmamiAnalytics from "@/components/umami-analytics";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -32,6 +33,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
+        <UmamiAnalytics />
         <script
           dangerouslySetInnerHTML={{
             __html: `

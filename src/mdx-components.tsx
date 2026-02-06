@@ -260,7 +260,9 @@ export const mdxComponents = {
     // Default codeblock.
     return (
       <>
-        {__raw__ && <CopyButton value={__raw__} src={__src__} />}
+        {__raw__ && (
+          <CopyButton value={__raw__} src={__src__} event="copy_chunk_code" />
+        )}
         <code {...props} />
       </>
     );

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { trackEvent as umamiTrackEvent } from "./umami";
 
 const eventSchema = z.object({
   name: z.enum([
@@ -32,9 +33,11 @@ const eventSchema = z.object({
 export type Event = z.infer<typeof eventSchema>;
 
 // can add analytics provider here
-// export function trackEvent(input: Event): void {
-//   const event = eventSchema.parse(input)
-//   if (event) {
-//     va.track(event.name, event.properties)
-//   }
-//}
+export function trackEvent(input: Event): void {
+  try {
+    const event = eventSchema.parse(input);
+    umamiTrackEvent(event.name, event.properties);
+  } catch (error) {
+    console.error("✗ Event validation failed:", error);
+  }
+}

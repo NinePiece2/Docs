@@ -98,7 +98,7 @@ function ComponentCode({
           {title}
         </figcaption>
       )}
-      <CopyButton value={code} />
+      <CopyButton value={code} event="copy_block_code" />
       <div dangerouslySetInnerHTML={{ __html: highlightedCode }} />
     </figure>
   );
