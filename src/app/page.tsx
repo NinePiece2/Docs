@@ -69,7 +69,7 @@ export default function IndexPage() {
             <Link href="/docs">Explore Docs</Link>
           </Button>
           <Button asChild size="sm" variant="ghost" className="rounded-lg">
-            <Link href="/docs/installation">Browse by Topic</Link>
+            <Link href="/docs/docker-installation">Browse by Topic</Link>
           </Button>
         </PageActions>
       </PageHeader>

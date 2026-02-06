@@ -49,67 +49,67 @@ jobs:
             NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}
             NEXT_PUBLIC_UMAMI_URL=${{ secrets.NEXT_PUBLIC_UMAMI_URL }}
 
-#   deploy:
-#     needs: build
-#     concurrency:
-#       group: deploy-environment
-#       cancel-in-progress: false # Prevents new deployments from canceling an ongoing one
-#     runs-on: self-hosted
-#     env:
-#       KUBECONFIG: /root/.kube/config
-#     steps:
-#       - name: Create Deployment
-#         id: deployment
-#         uses: chrnorm/deployment-action@v2
-#         with:
-#           token: ${{ secrets.GITHUB_TOKEN }}
-#           environment: production
-#           description: "Deploy commit ${{ github.sha }} to Kubernetes"
-#           transient-environment: false
-#           production-environment: true
+  deploy:
+    needs: build
+    concurrency:
+      group: deploy-environment
+      cancel-in-progress: false # Prevents new deployments from canceling an ongoing one
+    runs-on: self-hosted
+    env:
+      KUBECONFIG: /root/.kube/config
+    steps:
+      - name: Create Deployment
+        id: deployment
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: production
+          description: "Deploy commit ${{ github.sha }} to Kubernetes"
+          transient-environment: false
+          production-environment: true
 
-#       - name: Mark Deployment as In Progress
-#         uses: chrnorm/deployment-status@v2
-#         with:
-#           token: ${{ secrets.GITHUB_TOKEN }}
-#           state: in_progress
-#           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+      - name: Mark Deployment as In Progress
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: in_progress
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
 
-#       - name: Update Kubernetes Deployment
-#         run: |
-#           kubectl set image deployment/docs docs=ghcr.io/ninepiece2/docs:latest -n docs
+      - name: Update Kubernetes Deployment
+        run: |
+          kubectl set image deployment/docs docs=ghcr.io/ninepiece2/docs:latest -n docs
 
-#           kubectl annotate deployment docs \
-#             kubernetes.io/change-cause="Deployed commit ${{ github.sha }} from branch ${{ github.ref_name }} via GitHub Actions run https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Updated images: App=ninepiece2/docs" \
-#             --overwrite -n docs
+          kubectl annotate deployment docs \
+            kubernetes.io/change-cause="Deployed commit ${{ github.sha }} from branch ${{ github.ref_name }} via GitHub Actions run https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Updated images: App=ninepiece2/docs" \
+            --overwrite -n docs
 
-#           kubectl rollout restart deployment/docs -n docs
+          kubectl rollout restart deployment/docs -n docs
 
-#       - name: Mark Deployment as Rolling Out
-#         uses: chrnorm/deployment-status@v2
-#         with:
-#           token: ${{ secrets.GITHUB_TOKEN }}
-#           state: in_progress
-#           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
-#           description: "Rolling out to Kubernetes..."
+      - name: Mark Deployment as Rolling Out
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: in_progress
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          description: "Rolling out to Kubernetes..."
 
-#       - name: Wait for Rollout to Finish
-#         run: |
-#           echo "⏳ Waiting for rollout to finish..."
-#           kubectl rollout status deployment/docs -n docs --timeout=15m
+      - name: Wait for Rollout to Finish
+        run: |
+          echo "⏳ Waiting for rollout to finish..."
+          kubectl rollout status deployment/docs -n docs --timeout=15m
 
-#       - name: Mark Deployment as Successful
-#         if: success()
-#         uses: chrnorm/deployment-status@v2
-#         with:
-#           token: ${{ secrets.GITHUB_TOKEN }}
-#           state: success
-#           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+      - name: Mark Deployment as Successful
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: success
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
 
-#       - name: Mark Deployment as Failed
-#         if: failure()
-#         uses: chrnorm/deployment-status@v2
-#         with:
-#           token: ${{ secrets.GITHUB_TOKEN }}
-#           state: failure
-#           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+      - name: Mark Deployment as Failed
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: failure
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}

@@ -34,3 +34,5 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t docs:test .
+        env:
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
