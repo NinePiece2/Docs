@@ -35,6 +35,4 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t docs:test . \
-            --build-arg NEXT_PUBLIC_APP_URL=http://localhost:3000 \
-            --build-arg NEXT_PUBLIC_UMAMI_WEBSITE_ID=test-string \
-            --build-arg NEXT_PUBLIC_UMAMI_URL=http://localhost:3000/test
+            --build-arg NEXT_PUBLIC_APP_URL=http://localhost:3000
