@@ -33,8 +33,8 @@ jobs:
         run: npm run build
 
       - name: Build Docker image
-        run: docker build -t docs:test .
-        env:
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
-          NEXT_PUBLIC_UMAMI_WEBSITE_ID: test-string
-          NEXT_PUBLIC_UMAMI_URL: http://localhost:3000/test
+        run: |
+          docker build -t docs:test . \
+            --build-arg NEXT_PUBLIC_APP_URL=http://localhost:3000 \
+            --build-arg NEXT_PUBLIC_UMAMI_WEBSITE_ID=test-string \
+            --build-arg NEXT_PUBLIC_UMAMI_URL=http://localhost:3000/test
