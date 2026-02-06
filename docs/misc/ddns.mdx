@@ -1,0 +1,25 @@
+---
+title: Cloudflare DDNS
+description: Setting up cloudflare DDNS so certain DNS reconds maintain the correct IP address.
+---
+
+When hosting applications on residential connects that constantly change IP it's important to ensure the IP address
+used is always up to date to ensure systems have a reliable uptime.
+
+## My commands
+
+Update addreses
+
+```bash
+sudo nano /etc/ddclient.conf
+```
+
+Run manually:
+
+```bash
+sudo ddclient -daemon=0 -debug -verbose -noquiet
+```
+
+## Sources
+
+[Ubuntu Community](https://help.ubuntu.com/community/DynamicDNS)
