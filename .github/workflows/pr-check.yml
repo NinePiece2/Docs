@@ -36,3 +36,5 @@ jobs:
         run: docker build -t docs:test .
         env:
           NEXT_PUBLIC_APP_URL: http://localhost:3000
+          NEXT_PUBLIC_UMAMI_WEBSITE_ID: test-string
+          NEXT_PUBLIC_UMAMI_URL: http://localhost:3000/test
