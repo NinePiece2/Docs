@@ -55,6 +55,8 @@ jobs:
       group: deploy-environment
       cancel-in-progress: false # Prevents new deployments from canceling an ongoing one
     runs-on: self-hosted
+    permissions:
+      deployments: write
     env:
       KUBECONFIG: /root/.kube/config
     steps:
