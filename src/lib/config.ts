@@ -9,7 +9,7 @@ export const siteConfig = {
   },
   navItems: [
     {
-      href: "/docs/installation",
+      href: "/docs",
       label: "Docs",
     },
     // {
