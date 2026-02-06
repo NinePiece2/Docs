@@ -1,0 +1,25 @@
+---
+title: WSL ROCm
+description: After a few days of troubleshooting trying to get ROCm to work on WSL I noted down these instructions for future me.
+---
+
+I wanted to run ROCm on WSL so I could run some computer vision model training with Tensorflow which led me down a multi day rabbit hole.
+
+1. Install WSL (I'm partial to Ubuntu Server)
+2. Add these repos (might need to be changed depending on release)
+
+```bash
+sudo add-apt-repository -y -s deb http://security.ubuntu.com/ubuntu jammy main universe
+```
+
+3. Install ROCm drivers for WSL [here](https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html)
+4. Install tensorflow-rocm from [here](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/3rd-party/tensorflow-install.html#install-tensorflow-versions)
+
+5. Either export the following or add them to your .bashrc:
+
+```rc
+HSA_ENABLE_SDMA = 0;
+ROCM_PATH = /opt/cmor;
+```
+
+And it works!! Hopefully....

@@ -1,0 +1,73 @@
+---
+title: Mellanox NIC on TrueNAS
+description: Some steps I followed to get a Mellanox CoonectX-3 NIC working on TrueNAS.
+---
+
+<Callout className="mb-6 border-emerald-600 bg-emerald-100 dark:border-red-400 dark:bg-red-900">
+  **NOTICE:** This is for an old version of TrueNAS and may not work on newer
+  versions.
+</Callout>
+
+I spent a few days wondering if I wasted my money buying a pair of Mellanox ConnectX-3 CX354A Dual 40GbE QSFP cards
+that were not working on my TrueNAS server.
+
+## For TrueNAS 22.12.2:
+
+### Need to edit the `truenas-grub.py` file under `/usr/local/bin`:
+
+```bash
+nano /usr/local/bin/truenas-grub.py
+```
+
+Make sure that the config is as follows
+
+```py
+config = [
+        'GRUB_DISTRIBUTOR="TrueNAS Scale"',
+        'GRUB_TIMEOUT=10',
+        'GRUB_CMDLINE_LINUX_DEFAULT="pci=realloc=off libata.allow_tpm=1 systemd.unified_cgroup_hierarchy=0 amd_iommu=on iommu=pt '
+        'kvm_amd.npt=1 kvm_amd.avic=1 intel_iommu=on zfsforce=1 nvme_core.multipath=N'
+        f'{f" {kernel_extra_options}" if kernel_extra_options else ""}"',
+    ]
+```
+
+### Need to edit the `truenas.cfg`
+
+```bash
+nano /etc/default/grub.d/truenas.cfg
+```
+
+1. Find the line that starts with `GRUB_CMDLINE_LINUX_DEFAULT`.
+
+2. There are erros at the end of the file where is has `attributeone=value attributetwo=value ...`
+   delete these entries.
+
+### Update Grub
+
+Run the following command to update grub:
+
+```bash
+update-grub
+```
+
+Then reboot.
+
+### If the NIC's port is not in Ethernet Mode
+
+1. Download MST and Use it to change the Port Mode to Ethernet. There is a guide [here](https://blog.insanegenius.com/2020/06/21/moving-from-unraid-to-proxmox-ve/).
+
+2. Add the following Init/Shutdown Script [via](https://www.truenas.com/community/threads/infiniband-40gb-mellanox-installation-on-truenas-scale.90972/)
+
+```config
+System Settings > Advanced > Edit Init/Shutdown Script
+Type = Command
+Command = ``modprobe ib_ipoib && modprobe ib_umad``
+When = Post init
+Enabled = Yes
+Timeout = 10
+```
+
+## For after TrueNAS Bluefin
+
+After updating to TrueNAS Bluefin `systemd.unified_cgroup_hierarchy=0` is not included by default in the config
+but is still needed.

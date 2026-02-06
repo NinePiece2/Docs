@@ -1,0 +1,32 @@
+---
+title: ZFS Data Transfer
+description: Some useful commands for moving Zvols or datasets across pools
+---
+
+I needed to migrate some Zvols to a different pool so I found these zfs commands.
+
+1. Create a snapshot.
+
+```bash
+zfs snapshot poolname/zvolname@snapshot_name
+# or
+zfs snapshot poolname/dataset@snapshot_name
+```
+
+2. View Snapshots
+
+```bash
+zfs list -t snapshot
+```
+
+3. Copy the zvol or dataset as a snapshot to the new pool.
+
+```bash
+zfs send SourcePool/zvolname@snapshot_name | zfs recv DestPool/zvolname
+# or
+zfs send SourcePool/datasetname@snapshot_name | zfs recv DestPool/datasetname
+```
+
+If you want the destination's name to be different from the souce you can change the destination's name.
+
+_**Note**: If you make chanegs to a dataset or zvol after the snapshot it won't be copied to the destination._

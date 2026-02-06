@@ -1,4 +1,7 @@
 {
   "title": "Get Started",
-  "pages": ["[Docker Installation](/docs/docker-installation)"]
+  "pages": [
+    "[Docker Installation](/docs/docker-installation)",
+    "[WSL ROCm](/docs/wsl-rocm)"
+  ]
 }
