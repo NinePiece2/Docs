@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Kbd } from "@/components/ui/kbd";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
 interface PagefindResultData {
   meta: {
@@ -51,6 +51,7 @@ export function Search() {
   const [results, setResults] = useState<SearchResultItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isMac, setIsMac] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Load pagefind on mount
@@ -76,6 +77,9 @@ export function Search() {
       }
     }
     loadPagefind();
+
+    // Detect if on Mac
+    setIsMac(/Mac|iPhone|iPad|iPod/.test(navigator.platform));
   }, []);
 
   // Handle search
@@ -148,7 +152,12 @@ export function Search() {
           <span className="sm:hidden">
             <SearchIcon className="h-4 w-4" />
           </span>
-          <Kbd className="hidden pointer-events-none sm:flex">⌘K</Kbd>
+          <KbdGroup>
+            <Kbd className="hidden pointer-events-none sm:flex">
+              {isMac ? "⌘" : "Ctrl"}
+            </Kbd>
+            <Kbd className="hidden pointer-events-none sm:flex">K</Kbd>
+          </KbdGroup>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full sm:w-96 p-0" align="start">
