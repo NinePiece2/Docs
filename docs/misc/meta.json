@@ -1,4 +1,9 @@
 {
   "title": "Miscellaneous",
-  "pages": ["ddns", "mellanox-nic-truenas", "data-transfer"]
+  "pages": [
+    "ddns",
+    "mellanox-nic-truenas",
+    "data-transfer",
+    "quick-self-signed-cert"
+  ]
 }
