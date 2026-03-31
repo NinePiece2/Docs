@@ -47,8 +47,27 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 3000
-      nodePort: 30011
-  type: LoadBalancer
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: docs-ingress
+  namespace: docs
+spec:
+  ingressClassName: haproxy
+  rules:
+    - host: docs.romitsagu.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: docs-service
+                port:
+                  number: 80
 
 ---
 apiVersion: autoscaling/v2
