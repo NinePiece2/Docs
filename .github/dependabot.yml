@@ -4,6 +4,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+      timezone: "America/Toronto"
+    cooldown:
+      default-days: 3
     commit-message:
       prefix: "deps(npm)"
     groups:
@@ -15,6 +18,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+      timezone: "America/Toronto"
+    cooldown:
+      default-days: 3
     commit-message:
       prefix: "deps(actions)"
     groups:
