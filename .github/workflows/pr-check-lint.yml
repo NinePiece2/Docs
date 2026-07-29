@@ -1,4 +1,4 @@
-name: PR Build & Test
+name: PR Lint Test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  lint-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,13 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run build
+      - name: Run lint
         env:
           CI: false
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
-        run: npm run build
-
-      - name: Build Docker image
-        run: |
-          docker build -t docs:test . \
-            --build-arg NEXT_PUBLIC_APP_URL=http://localhost:3000
+        run: npm run lint
