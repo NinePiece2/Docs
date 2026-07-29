@@ -50,16 +50,6 @@ export function SiteHeader() {
             <Separator orientation="vertical" />
             <ModeSwitcher />
             <Separator orientation="vertical" className="mr-2" />
-            <Button
-              asChild
-              size="sm"
-              className="hidden h-[31px] rounded-lg sm:flex"
-            >
-              a
-            </Button>
-            <Button asChild size="sm" className="h-[31px] rounded-lg sm:hidden">
-              ad
-            </Button>
           </div>
         </div>
       </div>
