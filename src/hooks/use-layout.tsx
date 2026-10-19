@@ -131,10 +131,11 @@ const Layout = ({
   }, [forcedLayout, layout, applyLayout]);
 
   // Prevent layout changes during hydration
-  const [isHydrated, setIsHydrated] = React.useState(false);
-  React.useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  const isHydrated = React.useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const providerValue = React.useMemo(
     () => ({
