@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Search as SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,13 +45,21 @@ interface SearchResultItem {
   url: string;
 }
 
+const subscribeToPlatform = () => () => {};
+const getIsMac = () => /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+const getServerIsMac = () => false;
+
 export function Search() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResultItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [isMac, setIsMac] = useState(false);
+  const isMac = useSyncExternalStore(
+    subscribeToPlatform,
+    getIsMac,
+    getServerIsMac,
+  );
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Load pagefind on mount
@@ -78,8 +86,6 @@ export function Search() {
     }
     loadPagefind();
 
-    // Detect if on Mac
-    setIsMac(/Mac|iPhone|iPad|iPod/.test(navigator.platform));
   }, []);
 
   // Handle search
