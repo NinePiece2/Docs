@@ -14,9 +14,5 @@ const getSnapshot = () =>
 const getServerSnapshot = () => false;
 
 export function useIsMobile() {
-  return React.useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
+  return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

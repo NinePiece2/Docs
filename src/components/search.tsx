@@ -85,7 +85,6 @@ export function Search() {
       }
     }
     loadPagefind();
-
   }, []);
 
   // Handle search
