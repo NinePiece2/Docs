@@ -32,7 +32,10 @@ export async function ComponentSource({
   let code: string | undefined;
 
   if (src) {
-    const file = await fs.readFile(path.join(process.cwd(), src), "utf-8");
+    const file = await fs.readFile(
+      path.join(process.cwd(), "src", src),
+      "utf-8",
+    );
     code = file;
   }
 
