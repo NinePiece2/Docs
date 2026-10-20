@@ -21,7 +21,13 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
   description: siteConfig.description,
-  keywords: ["Romit Sagu", "Docs", "Documentation", "Romit Sagu Docs", "Romit Sagu Documentation"],
+  keywords: [
+    "Romit Sagu",
+    "Docs",
+    "Documentation",
+    "Romit Sagu Docs",
+    "Romit Sagu Documentation",
+  ],
   authors: [{ name: "Romit Sagu", url: "https://romitsagu.com" }],
   creator: "NinePiece2",
   openGraph: {
