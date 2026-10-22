@@ -1,0 +1,82 @@
+---
+title: Raspberry Pi Proxmox VE
+description: Setting a Raspberry Pi with Proxmox VE.
+---
+
+Based on [this](https://www.virtualizationhowto.com/2026/08/i-got-proxmox-ve-9-working-on-raspberry-pi-5-with-nvme-boot-and-the-onboard-nic/).
+
+Ras Pi should have Pi OS Lite
+
+## Change IP
+
+```bash
+sudo nmcli connection modify "Wired connection 1" \
+ipv4.addresses 192.168.10.106/21 \
+ipv4.gateway 192.168.10.1 \
+ipv4.dns 192.168.15.200 \
+ipv4.method manual
+```
+
+## Steps
+
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install wget ca-certificates gnupg -y
+
+sudo wget -O /usr/share/keyrings/proxmox-archive-keyring.gpg \
+https://enterprise.proxmox.com/debian/proxmox-archive-keyring-trixie.gpg
+```
+
+```bash
+sudo nano /etc/apt/sources.list.d/proxmox.sources
+```
+
+Creates this file:
+
+```txt
+Types: deb
+URIs: http://download.proxmox.com/debian/pve
+Suites: trixie
+Components: pve-no-subscription
+Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
+```
+
+```bash
+sudo apt update
+sudo apt-cache policy proxmox-ve
+sudo bash -c 'echo "manage_etc_hosts: false" >> /etc/cloud/cloud.cfg'
+sudo cat /etc/cloud/cloud.cfg | grep manage_etc_hosts
+```
+
+Update the hosts file:
+
+```bash
+sudo nano /etc/hosts
+```
+
+Add this
+
+```txt
+{ip-address} {hostname}
+
+For exmaple:
+192.168.10.106 serina
+```
+
+Simulate the install and make sure it doesn't override the following:
+
+```bash
+sudo apt -s install proxmox-ve
+
+REMOVING:
+  firmware-atheros  firmware-brcm80211  firmware-libertas  firmware-realtek
+```
+
+If it doesn't install it
+
+```bash
+sudo apt install proxmox-ve
+```
+
+Follow [these](https://github.com/Jamesits/pve-fake-subscription) steps to remove the Proxmox No Subscription warning message.

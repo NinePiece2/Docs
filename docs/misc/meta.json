@@ -4,6 +4,7 @@
     "ddns",
     "mellanox-nic-truenas",
     "data-transfer",
-    "quick-self-signed-cert"
+    "quick-self-signed-cert",
+    "ras-pi-proxmox"
   ]
 }
