@@ -20,15 +20,42 @@ export function GitHubLink() {
 }
 
 export async function StarsCount() {
-  const data = await fetch("https://api.github.com/repos/ninepiece2/docs", {
-    next: { revalidate: 86400 },
-  });
-  const json = await data.json();
+  let formattedCount: string | null = null;
 
-  const formattedCount =
-    json.stargazers_count >= 1000
-      ? `${Math.round(json.stargazers_count / 1000)}k`
-      : json.stargazers_count.toLocaleString();
+  try {
+    const data = await fetch("https://api.github.com/repos/ninepiece2/docs", {
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
+      next: { revalidate: 86400 },
+      signal: AbortSignal.timeout(5000),
+    });
+
+    if (!data.ok) {
+      return null;
+    }
+
+    const json: unknown = await data.json();
+    if (
+      typeof json !== "object" ||
+      json === null ||
+      !("stargazers_count" in json) ||
+      typeof json.stargazers_count !== "number"
+    ) {
+      return null;
+    }
+
+    formattedCount =
+      json.stargazers_count >= 1000
+        ? `${Math.round(json.stargazers_count / 1000)}k`
+        : json.stargazers_count.toLocaleString();
+  } catch {
+    formattedCount = null;
+  }
+
+  if (formattedCount === null) {
+    return null;
+  }
 
   return (
     <span className="text-muted-foreground w-fit text-xs tabular-nums">
